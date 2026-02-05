@@ -1,0 +1,17 @@
+package com.atlaz.atlaz_biblioteca.application.usecase;
+
+import com.atlaz.atlaz_biblioteca.application.port.out.StudentRepository;
+import com.atlaz.atlaz_biblioteca.domain.model.Student;
+
+public class CreateStudentUseCase {
+
+    private final StudentRepository studentRepository;
+
+    public CreateStudentUseCase(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
+
+    public Student execute(Student student) {
+        return studentRepository.save(student);
+    }
+}
