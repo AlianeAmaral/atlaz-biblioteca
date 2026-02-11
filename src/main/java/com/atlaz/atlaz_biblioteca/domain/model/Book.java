@@ -1,12 +1,26 @@
 package com.atlaz.atlaz_biblioteca.domain.model;
 
+import java.time.LocalDateTime;
+
 public class Book {
     private Long id;
     private String title;
     private String author;
     private String genre;
     private String imageId;
-    private BookStatus status;
+    private BookStatus bookStatus;
+
+    public Book(Long id, String title, String author, String genre, String imageId, BookStatus bookStatus) {
+        this.id = id;
+        this.title = title;
+        this.author = author;
+        this.genre = genre;
+        this.imageId = imageId;
+        this.bookStatus = bookStatus;
+    }
+
+    public Book() {
+    }
 
     public Long getId() {
         return id;
@@ -48,12 +62,12 @@ public class Book {
         this.imageId = imageId;
     }
 
-    public BookStatus getStatus() {
-        return status;
+    public BookStatus getBookStatus() {
+        return bookStatus;
     }
 
-    public void setStatus(BookStatus status) {
-        this.status = status;
+    public void setBookStatus(BookStatus bookStatus) {
+        this.bookStatus = bookStatus;
     }
 }
 

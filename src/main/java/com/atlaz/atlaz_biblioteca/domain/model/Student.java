@@ -1,5 +1,6 @@
 package com.atlaz.atlaz_biblioteca.domain.model;
 
+// private para segurança / encapsulamento
 public class Student {
     private Long id;
     private String name;
@@ -7,6 +8,19 @@ public class Student {
     private String registration;
     private String imageId;
 
+    // construtor com todos os argumentos, o atributo recebe o valor recebido de fora
+    public Student(Long id, String name, String email, String registration, String imageId) {
+        this.id = id;
+        this.name = name;
+        this.email = email;
+        this.registration = registration;
+        this.imageId = imageId;
+    }
+
+    // construtor vazio (flexibilidade para criação do objeto)
+    public Student() {}
+
+    // public, getters (permite ver sem mexer) e setters (permite mexer mas com regras)
     public Long getId() {
         return id;
     }
