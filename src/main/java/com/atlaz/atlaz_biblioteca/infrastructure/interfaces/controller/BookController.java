@@ -2,6 +2,7 @@ package com.atlaz.atlaz_biblioteca.infrastructure.interfaces.controller;
 
 import com.atlaz.atlaz_biblioteca.application.usecase.book.CreateBookUseCase;
 import com.atlaz.atlaz_biblioteca.application.usecase.book.ListAllBookUseCase;
+import com.atlaz.atlaz_biblioteca.application.usecase.book.UpdateBookUseCase;
 import com.atlaz.atlaz_biblioteca.domain.model.Book;
 import com.atlaz.atlaz_biblioteca.infrastructure.interfaces.dto.request.CreateBookRequest;
 import com.atlaz.atlaz_biblioteca.infrastructure.interfaces.dto.response.BookResponse;
@@ -17,11 +18,13 @@ public class BookController {
 
     private final CreateBookUseCase createBookUseCase;
     private final ListAllBookUseCase listAllBookUseCase;
+    private final UpdateBookUseCase updateBookUseCase;
     private final BookMapper bookMapper;
 
-    public BookController(CreateBookUseCase createBookUseCase, ListAllBookUseCase listAllBookUseCase, BookMapper bookMapper) {
+    public BookController(CreateBookUseCase createBookUseCase, ListAllBookUseCase listAllBookUseCase, UpdateBookUseCase updateBookUseCase, BookMapper bookMapper) {
         this.createBookUseCase = createBookUseCase;
         this.listAllBookUseCase = listAllBookUseCase;
+        this.updateBookUseCase = updateBookUseCase;
         this.bookMapper = bookMapper;
     }
 
@@ -45,4 +48,14 @@ public class BookController {
                 .map(bookMapper::toResponse)
                 .toList();
     }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+        // não foi criado outro UpdateBookRequest porque na edição seriam todos os campos para editar mesmo (DRY)
+        public BookResponse update(@PathVariable Long id, @RequestBody CreateBookRequest request) {
+            Book bookDomain = bookMapper.toDomain(request);
+            Book updatedBook = updateBookUseCase.execute(id, bookDomain);
+
+            return bookMapper.toResponse(updatedBook);
+        }
 }

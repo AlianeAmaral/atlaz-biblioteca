@@ -1,6 +1,7 @@
 package com.atlaz.atlaz_biblioteca.infrastructure.persistence.adapter;
 
 import com.atlaz.atlaz_biblioteca.domain.model.Book;
+import com.atlaz.atlaz_biblioteca.domain.model.Student;
 import com.atlaz.atlaz_biblioteca.domain.repository.BookRepository;
 import com.atlaz.atlaz_biblioteca.infrastructure.persistence.entity.BookEntity;
 import com.atlaz.atlaz_biblioteca.infrastructure.persistence.repository.BookJpaRepository;
@@ -40,9 +41,17 @@ public class BookRepositoryAdapter implements BookRepository {
         return book;
     }
 
+    // para empréstimo
     @Override
     public Optional<Book> findByBookCode(Long bookCode) {
         return bookJpaRepository.findByBookCode(bookCode)
+                .map(this::toDomain);
+    }
+
+    // para atualização
+    @Override
+    public Optional<Book> findById(Long id) {
+        return bookJpaRepository.findById(id)
                 .map(this::toDomain);
     }
 
