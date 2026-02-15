@@ -1,6 +1,7 @@
 package com.atlaz.atlaz_biblioteca.infrastructure.interfaces.controller;
 
 import com.atlaz.atlaz_biblioteca.application.usecase.student.ListAllStudentUseCase;
+import com.atlaz.atlaz_biblioteca.application.usecase.student.UpdateStudentUseCase;
 import com.atlaz.atlaz_biblioteca.domain.model.Student;
 import com.atlaz.atlaz_biblioteca.application.usecase.student.CreateStudentUseCase;
 import com.atlaz.atlaz_biblioteca.infrastructure.interfaces.dto.request.CreateStudentRequest;
@@ -18,12 +19,14 @@ public class StudentController {
     // foi colocado dessa forma para separar quem cria e quem lista (SRP: princípio da responsabilidade única)
     private final CreateStudentUseCase createStudentUseCase;
     private final ListAllStudentUseCase listAllStudentUseCase;
+    private final UpdateStudentUseCase updateStudentUseCase;
     private final StudentMapper studentMapper;
 
     // construtor que injeta as duas dependências
-    public StudentController(CreateStudentUseCase createStudentUseCase, ListAllStudentUseCase listAllStudentUseCase, StudentMapper studentMapper) {
+    public StudentController(CreateStudentUseCase createStudentUseCase, ListAllStudentUseCase listAllStudentUseCase, UpdateStudentUseCase updateStudentUseCase, StudentMapper studentMapper) {
         this.createStudentUseCase = createStudentUseCase;
         this.listAllStudentUseCase = listAllStudentUseCase;
+        this.updateStudentUseCase = updateStudentUseCase;
         this.studentMapper = studentMapper;
     }
 
@@ -51,5 +54,18 @@ public class StudentController {
         return students.stream()
                 .map(studentMapper::toResponse)
                 .toList();
+    }
+
+    @PutMapping("/{id}")
+    @ResponseStatus(HttpStatus.OK)
+    public StudentResponse update(@PathVariable Long id, @RequestBody CreateStudentRequest request) {
+        // converte o DTO request para domain
+        Student studentDomain = studentMapper.toDomain(request);
+
+        // executa o UseCase passando o ID da URL e demais dados do objeto
+        Student updatedStudent = updateStudentUseCase.execute(id, studentDomain);
+
+        // Converte de volta para Response (DTO)
+        return studentMapper.toResponse(updatedStudent);
     }
 }

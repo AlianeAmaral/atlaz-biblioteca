@@ -42,9 +42,17 @@ public class StudentRepositoryAdapter implements StudentRepository {
         return student;
     }
 
+    // para empréstimo
     @Override
     public Optional<Student> findByRegistration(String registration) {
         return studentJpaRepository.findByRegistration(registration)
+                .map(this::toDomain);
+    }
+
+    // para atualização
+    @Override
+    public Optional<Student> findById(Long id) {
+        return studentJpaRepository.findById(id)
                 .map(this::toDomain);
     }
 

@@ -9,6 +9,9 @@ public interface StudentRepository {
     // salva ou atualiza aluno
     Student save(Student student);
 
+    // busca aluno por id para atualizar
+    Optional<Student> findById(Long id);
+
     // busca aluno por matrícula
     Optional<Student> findByRegistration(String registration);
 
