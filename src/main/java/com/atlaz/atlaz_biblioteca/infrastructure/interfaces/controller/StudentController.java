@@ -59,9 +59,9 @@ public class StudentController {
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public StudentResponse update(@PathVariable Long id, @RequestBody CreateStudentRequest request) {
+
         // converte o DTO request para domain
         Student studentDomain = studentMapper.toDomain(request);
-
         // executa o UseCase passando o ID da URL e demais dados do objeto
         Student updatedStudent = updateStudentUseCase.execute(id, studentDomain);
 
